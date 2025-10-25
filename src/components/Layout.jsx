@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LogOut, Menu, X, Sparkles, Shield } from 'lucide-react';
+import { LogOut, Menu, X, Shield } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { menuData } from '../MenuData';
 
@@ -18,71 +18,81 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className="layout">
+    <div className="flex h-screen bg-slate-50 font-sans">
       {/* Sidebar */}
-      <aside className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
-        <div className="sidebar-gradient"></div>
-        <div className="sidebar-header">
-          <div className="brand-logo">
+      <aside className={`w-65 bg-white border-r border-slate-200 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 fixed top-0 left-0 h-screen z-50 overflow-y-auto md:relative md:translate-x-0`}>
+        <div className="p-6 border-b border-slate-100 flex items-center gap-3 relative">
+          <div className="w-10 h-10 bg-indigo-500 text-white rounded-lg flex items-center justify-center">
             <Shield size={18} strokeWidth={2} />
           </div>
-          <div className="brand-text">
-            <h2>Via Kashmir</h2>
-            <span>Admin Panel</span>
+          <div className="flex flex-col">
+            <h2 className="text-lg font-semibold text-slate-800 m-0 tracking-tight">Via Kashmir</h2>
+            <span className="text-xs text-slate-500 font-medium uppercase tracking-wide">Admin Panel</span>
           </div>
           <button 
-            className="close-sidebar"
+            className="absolute right-5 bg-transparent border-0 text-slate-500 cursor-pointer p-1.5 rounded-md transition-all duration-200 hover:bg-slate-50 hover:text-indigo-500 md:hidden"
             onClick={() => setSidebarOpen(false)}
           >
             <X size={20} strokeWidth={1.5} />
           </button>
         </div>
         
-        <nav className="sidebar-nav">
+        <nav className="py-4">
           {menuData.map((item) => (
             <Link
               key={item.id}
               to={item.link}
-              className={`nav-item ${location.pathname === item.link ? 'active' : ''}`}
+              className={`flex items-center py-3 px-5 text-slate-500 no-underline transition-all duration-200 text-sm font-medium relative mx-2 mb-0.5 rounded-lg hover:bg-slate-50 hover:text-indigo-500 ${
+                location.pathname === item.link 
+                  ? 'bg-indigo-50 text-indigo-500 font-semibold' 
+                  : ''
+              }`}
               onClick={() => setSidebarOpen(false)}
             >
-              <span className="nav-icon">{React.cloneElement(item.icon, { size: 20, strokeWidth: 1.5 })}</span>
-              <span className="nav-label">{item.label}</span>
-              <div className="nav-indicator"></div>
+              <span className="mr-3 flex-shrink-0">
+                {React.cloneElement(item.icon, { size: 20, strokeWidth: 1.5 })}
+              </span>
+              <span className="text-sm">{item.label}</span>
+              {location.pathname === item.link && (
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-indigo-500 rounded-r-sm"></div>
+              )}
             </Link>
           ))}
         </nav>
       </aside>
 
       {/* Main Content */}
-      <div className="main-content">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <header className="header">
-          <div className="header-left">
+        <header className="bg-white px-6 h-16 border-b border-slate-200 flex justify-between items-center sticky top-0 z-40">
+          <div className="flex items-center gap-5">
             <button 
-              className="menu-toggle"
+              className="bg-transparent border-0 text-slate-500 cursor-pointer p-2 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-slate-50 hover:text-indigo-500 md:hidden"
               onClick={() => setSidebarOpen(true)}
             >
               <Menu size={20} strokeWidth={1.5} />
             </button>
             <div className="breadcrumb">
-              <span className="breadcrumb-current">
+              <span className="text-base font-semibold text-slate-800">
                 {menuData.find(item => item.link === location.pathname)?.label || 'Dashboard'}
               </span>
             </div>
           </div>
           
-          <div className="header-right">
-            <div className="user-info">
-              <div className="user-avatar">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-indigo-500 text-white rounded-lg flex items-center justify-center font-semibold text-sm">
                 {currentUser?.email?.charAt(0).toUpperCase()}
               </div>
-              <div className="user-details">
-                <span className="user-name">Admin</span>
-                <span className="user-email">{currentUser?.email}</span>
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold text-slate-800">Admin</span>
+                <span className="text-xs text-slate-500">{currentUser?.email}</span>
               </div>
             </div>
-            <button className="logout-button" onClick={handleLogout}>
+            <button 
+              className="flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 py-2 px-3 rounded-lg cursor-pointer text-sm font-medium transition-all duration-200 hover:bg-red-100"
+              onClick={handleLogout}
+            >
               <LogOut size={16} strokeWidth={1.5} />
               <span>Sign Out</span>
             </button>
@@ -90,305 +100,18 @@ const Layout = ({ children }) => {
         </header>
 
         {/* Page Content */}
-        <main className="page-content">
+        <main className="flex-1 p-6 overflow-y-auto bg-slate-50">
           {children}
         </main>
       </div>
 
       {/* Overlay for mobile */}
-      {sidebarOpen && <div className="overlay" onClick={() => setSidebarOpen(false)} />}
-
-      <style jsx>{`
-        .layout {
-          display: flex;
-          height: 100vh;
-          background: #f8fafc;
-          font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-        }
-
-        .sidebar {
-          width: 260px;
-          background: #ffffff;
-          border-right: 1px solid #e2e8f0;
-          transform: translateX(-100%);
-          transition: transform 0.3s ease;
-          position: fixed;
-          top: 0;
-          left: 0;
-          height: 100vh;
-          z-index: 1000;
-          overflow-y: auto;
-          position: relative;
-        }
-
-        .sidebar-gradient {
-          display: none;
-        }
-
-        .sidebar-open {
-          transform: translateX(0);
-        }
-
-        @media (min-width: 768px) {
-          .sidebar {
-            position: relative;
-            transform: translateX(0);
-          }
-        }
-
-        .sidebar-header {
-          padding: 24px 20px;
-          border-bottom: 1px solid #f1f5f9;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          position: relative;
-        }
-
-        .brand-logo {
-          width: 40px;
-          height: 40px;
-          background: #6366f1;
-          color: white;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .brand-text h2 {
-          font-size: 18px;
-          font-weight: 600;
-          color: #1e293b;
-          margin: 0;
-          letter-spacing: -0.2px;
-        }
-
-        .brand-text span {
-          font-size: 11px;
-          color: #64748b;
-          font-weight: 500;
-          text-transform: uppercase;
-          letter-spacing: 0.3px;
-        }
-
-        .close-sidebar {
-          position: absolute;
-          right: 20px;
-          background: none;
-          border: none;
-          color: #64748b;
-          cursor: pointer;
-          padding: 6px;
-          border-radius: 6px;
-          transition: all 0.2s ease;
-        }
-
-        .close-sidebar:hover {
-          background: #f1f5f9;
-          color: #6366f1;
-        }
-
-        @media (min-width: 768px) {
-          .close-sidebar {
-            display: none;
-          }
-        }
-
-        .sidebar-nav {
-          padding: 16px 0;
-        }
-
-        .nav-item {
-          display: flex;
-          align-items: center;
-          padding: 12px 20px;
-          color: #64748b;
-          text-decoration: none;
-          transition: all 0.2s ease;
-          font-size: 14px;
-          font-weight: 500;
-          position: relative;
-          margin: 0 8px 2px 8px;
-          border-radius: 8px;
-        }
-
-        .nav-item:hover {
-          background: #f8fafc;
-          color: #6366f1;
-        }
-
-        .nav-item.active {
-          background: #eef2ff;
-          color: #6366f1;
-          font-weight: 600;
-        }
-
-        .nav-item.active .nav-indicator {
-          opacity: 1;
-        }
-
-        .nav-icon {
-          margin-right: 12px;
-          flex-shrink: 0;
-        }
-
-        .nav-label {
-          font-size: 14px;
-        }
-
-        .nav-indicator {
-          position: absolute;
-          left: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 3px;
-          height: 16px;
-          background: #6366f1;
-          border-radius: 0 2px 2px 0;
-          opacity: 0;
-          transition: opacity 0.2s ease;
-        }
-
-        .main-content {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          min-width: 0;
-        }
-
-        .header {
-          background: #ffffff;
-          padding: 0 24px;
-          height: 64px;
-          border-bottom: 1px solid #e2e8f0;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          position: sticky;
-          top: 0;
-          z-index: 100;
-        }
-
-        .header-left {
-          display: flex;
-          align-items: center;
-          gap: 20px;
-        }
-
-        .menu-toggle {
-          background: none;
-          border: none;
-          color: #64748b;
-          cursor: pointer;
-          padding: 8px;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.2s ease;
-        }
-
-        .menu-toggle:hover {
-          background: #f1f5f9;
-          color: #6366f1;
-        }
-
-        @media (min-width: 768px) {
-          .menu-toggle {
-            display: none;
-          }
-        }
-
-        .breadcrumb-current {
-          font-size: 16px;
-          font-weight: 600;
-          color: #1e293b;
-        }
-
-        .header-right {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-        }
-
-        .user-info {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-
-        .user-avatar {
-          width: 32px;
-          height: 32px;
-          background: #6366f1;
-          color: white;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 600;
-          font-size: 14px;
-        }
-
-        .user-details {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .user-name {
-          font-size: 13px;
-          font-weight: 600;
-          color: #1e293b;
-        }
-
-        .user-email {
-          font-size: 11px;
-          color: #64748b;
-        }
-
-        .logout-button {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          background: #fef2f2;
-          color: #dc2626;
-          border: 1px solid #fecaca;
-          padding: 8px 12px;
-          border-radius: 8px;
-          cursor: pointer;
-          font-size: 13px;
-          font-weight: 500;
-          transition: all 0.2s ease;
-        }
-
-        .logout-button:hover {
-          background: #fecaca;
-        }
-
-        .page-content {
-          flex: 1;
-          padding: 24px;
-          overflow-y: auto;
-          background: #f8fafc;
-        }
-
-        .overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.4);
-          z-index: 999;
-        }
-
-        @media (min-width: 768px) {
-          .overlay {
-            display: none;
-          }
-        }
-      `}</style>
+      {sidebarOpen && (
+        <div 
+          className="fixed top-0 left-0 right-0 bottom-0 bg-black/40 z-40 md:hidden" 
+          onClick={() => setSidebarOpen(false)} 
+        />
+      )}
     </div>
   );
 };

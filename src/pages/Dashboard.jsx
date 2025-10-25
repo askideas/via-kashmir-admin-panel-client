@@ -10,447 +10,120 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="dashboard">
-      <div className="page-header">
+    <div className="max-w-6xl font-sans">
+      <div className="flex justify-between items-start mb-6">
         <div>
-          <h1>Dashboard</h1>
-          <p>Welcome back! Here's what's happening with your business today.</p>
+          <h1 className="text-3xl font-bold text-slate-800 mb-1.5 tracking-tight">Dashboard</h1>
+          <p className="text-slate-500 text-base m-0 font-normal leading-relaxed">Welcome back! Here's what's happening with your business today.</p>
         </div>
-        <div className="header-actions">
-          <button className="action-btn">
+        
+        <div className="flex items-center gap-2">
+          <button className="flex items-center gap-1.5 bg-white border border-slate-200 py-2 px-3 rounded-lg text-sm text-slate-600 cursor-pointer transition-all duration-200 hover:bg-slate-50 hover:border-slate-300">
             <Calendar size={14} />
             This Week
           </button>
-          <button className="notification-btn">
+          <button className="relative bg-white border border-slate-200 p-2 rounded-lg text-slate-600 cursor-pointer transition-all duration-200 hover:bg-slate-50 hover:border-slate-300">
             <Bell size={14} />
-            <span className="notification-badge">3</span>
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-semibold px-1 py-0.5 rounded-lg min-w-4 text-center">3</span>
           </button>
         </div>
       </div>
 
-      <div className="metrics-grid">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
         {stats.map((stat, index) => (
-          <div key={index} className="metric-card">
-            <div className="metric-header">
-              <div className="metric-icon">
+          <div key={index} className="bg-white p-5 rounded-xl border border-slate-200 transition-all duration-200 hover:border-slate-300 hover:shadow-lg">
+            <div className="flex justify-between items-center mb-4">
+              <div className="w-10 h-10 bg-indigo-500 text-white rounded-lg flex items-center justify-center">
                 {React.cloneElement(stat.icon, { size: 18, strokeWidth: 2 })}
               </div>
-              <div className="metric-trend">
+              <div className="flex items-center gap-1 text-green-600">
                 <Activity size={12} />
-                <span className="metric-change">{stat.change}</span>
+                <span className="text-xs font-semibold bg-green-100 px-2 py-0.5 rounded-xl border border-green-200">{stat.change}</span>
               </div>
             </div>
             <div className="metric-content">
-              <h2>{stat.value}</h2>
-              <p>{stat.title}</p>
+              <h2 className="text-3xl font-bold text-slate-800 mb-1.5 tracking-tight">{stat.value}</h2>
+              <p className="text-slate-500 text-sm m-0 font-medium">{stat.title}</p>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="content-grid">
-        <div className="card large-card">
-          <div className="card-header">
-            <h3>Recent Activity</h3>
-            <button className="card-action">View All</button>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-xl overflow-hidden transition-all duration-200 hover:border-slate-300 hover:shadow-lg">
+          <div className="p-5 border-b border-slate-100 flex justify-between items-center">
+            <h3 className="text-base font-semibold text-slate-800 m-0 tracking-tight">Recent Activity</h3>
+            <button className="bg-transparent border-0 text-indigo-500 text-sm font-medium cursor-pointer py-1 px-2 rounded-md transition-all duration-200 hover:bg-indigo-50">View All</button>
           </div>
-          <div className="card-content">
-            <div className="activity-list">
-              <div className="activity-item">
-                <div className="activity-avatar success">
+          <div className="p-5">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-3 p-3 rounded-lg transition-colors duration-200 hover:bg-slate-50">
+                <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-white flex-shrink-0">
                   <BarChart3 size={14} />
                 </div>
-                <div className="activity-content">
-                  <p><strong>New booking received</strong> from Kashmir Valley Tour</p>
-                  <span>2 minutes ago</span>
+                <div className="flex-1">
+                  <p className="text-sm text-slate-800 m-0 mb-0.5 font-normal"><strong>New booking received</strong> from Kashmir Valley Tour</p>
+                  <span className="text-xs text-slate-500 font-normal">2 minutes ago</span>
                 </div>
-                <div className="activity-amount">+₹15,000</div>
+                <div className="text-sm font-semibold text-green-600">+₹15,000</div>
               </div>
-              <div className="activity-item">
-                <div className="activity-avatar info">
+              <div className="flex items-center gap-3 p-3 rounded-lg transition-colors duration-200 hover:bg-slate-50">
+                <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white flex-shrink-0">
                   <DollarSign size={14} />
                 </div>
-                <div className="activity-content">
-                  <p><strong>Payment processed</strong> for booking #1234</p>
-                  <span>15 minutes ago</span>
+                <div className="flex-1">
+                  <p className="text-sm text-slate-800 m-0 mb-0.5 font-normal"><strong>Payment processed</strong> for booking #1234</p>
+                  <span className="text-xs text-slate-500 font-normal">15 minutes ago</span>
                 </div>
-                <div className="activity-amount">₹8,500</div>
+                <div className="text-sm font-semibold text-green-600">₹8,500</div>
               </div>
-              <div className="activity-item">
-                <div className="activity-avatar warning">
+              <div className="flex items-center gap-3 p-3 rounded-lg transition-colors duration-200 hover:bg-slate-50">
+                <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center text-white flex-shrink-0">
                   <Users size={14} />
                 </div>
-                <div className="activity-content">
-                  <p><strong>New vendor registration</strong> approved</p>
-                  <span>1 hour ago</span>
+                <div className="flex-1">
+                  <p className="text-sm text-slate-800 m-0 mb-0.5 font-normal"><strong>New vendor registration</strong> approved</p>
+                  <span className="text-xs text-slate-500 font-normal">1 hour ago</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="card">
-          <div className="card-header">
-            <h3>Quick Actions</h3>
+        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden transition-all duration-200 hover:border-slate-300 hover:shadow-lg">
+          <div className="p-5 border-b border-slate-100">
+            <h3 className="text-base font-semibold text-slate-800 m-0 tracking-tight">Quick Actions</h3>
           </div>
-          <div className="card-content">
-            <div className="actions-grid">
-              <button className="action-card">
-                <div className="action-icon">
+          <div className="p-5">
+            <div className="grid grid-cols-2 gap-3">
+              <button className="flex flex-col items-center gap-2 bg-slate-50 border border-slate-200 py-4 px-3 rounded-lg cursor-pointer transition-all duration-200 text-center hover:bg-indigo-500 hover:text-white hover:border-indigo-500 group">
+                <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center text-indigo-500 transition-all duration-200 group-hover:bg-white/20 group-hover:text-white">
                   <Users size={16} />
                 </div>
-                <span>Add Vendor</span>
+                <span className="text-xs font-medium">Add Vendor</span>
               </button>
-              <button className="action-card">
-                <div className="action-icon">
+              <button className="flex flex-col items-center gap-2 bg-slate-50 border border-slate-200 py-4 px-3 rounded-lg cursor-pointer transition-all duration-200 text-center hover:bg-indigo-500 hover:text-white hover:border-indigo-500 group">
+                <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center text-indigo-500 transition-all duration-200 group-hover:bg-white/20 group-hover:text-white">
                   <Bell size={16} />
                 </div>
-                <span>Send Alert</span>
+                <span className="text-xs font-medium">Send Alert</span>
               </button>
-              <button className="action-card">
-                <div className="action-icon">
+              <button className="flex flex-col items-center gap-2 bg-slate-50 border border-slate-200 py-4 px-3 rounded-lg cursor-pointer transition-all duration-200 text-center hover:bg-indigo-500 hover:text-white hover:border-indigo-500 group">
+                <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center text-indigo-500 transition-all duration-200 group-hover:bg-white/20 group-hover:text-white">
                   <BarChart3 size={16} />
                 </div>
-                <span>View Reports</span>
+                <span className="text-xs font-medium">View Reports</span>
               </button>
-              <button className="action-card">
-                <div className="action-icon">
+              <button className="flex flex-col items-center gap-2 bg-slate-50 border border-slate-200 py-4 px-3 rounded-lg cursor-pointer transition-all duration-200 text-center hover:bg-indigo-500 hover:text-white hover:border-indigo-500 group">
+                <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center text-indigo-500 transition-all duration-200 group-hover:bg-white/20 group-hover:text-white">
                   <Activity size={16} />
                 </div>
-                <span>Analytics</span>
+                <span className="text-xs font-medium">Analytics</span>
               </button>
             </div>
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        .dashboard {
-          max-width: 1200px;
-          font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-        }
-
-        .page-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 24px;
-        }
-
-        .page-header h1 {
-          font-size: 28px;
-          font-weight: 700;
-          color: #1e293b;
-          margin: 0 0 6px 0;
-          letter-spacing: -0.4px;
-        }
-
-        .page-header p {
-          color: #64748b;
-          font-size: 15px;
-          margin: 0;
-          font-weight: 400;
-          line-height: 1.4;
-        }
-
-        .header-actions {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .action-btn {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          background: #ffffff;
-          border: 1px solid #e2e8f0;
-          padding: 8px 12px;
-          border-radius: 8px;
-          font-size: 13px;
-          color: #475569;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-
-        .action-btn:hover {
-          background: #f8fafc;
-          border-color: #cbd5e1;
-        }
-
-        .notification-btn {
-          position: relative;
-          background: #ffffff;
-          border: 1px solid #e2e8f0;
-          padding: 8px;
-          border-radius: 8px;
-          color: #475569;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-
-        .notification-btn:hover {
-          background: #f8fafc;
-          border-color: #cbd5e1;
-        }
-
-        .notification-badge {
-          position: absolute;
-          top: -4px;
-          right: -4px;
-          background: #ef4444;
-          color: white;
-          font-size: 9px;
-          font-weight: 600;
-          padding: 2px 5px;
-          border-radius: 8px;
-          min-width: 16px;
-          text-align: center;
-        }
-
-        .metrics-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-          gap: 20px;
-          margin-bottom: 24px;
-        }
-
-        .metric-card {
-          background: #ffffff;
-          padding: 20px;
-          border-radius: 12px;
-          border: 1px solid #e2e8f0;
-          transition: all 0.2s ease;
-        }
-
-        .metric-card:hover {
-          border-color: #cbd5e1;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        .metric-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 16px;
-        }
-
-        .metric-icon {
-          width: 40px;
-          height: 40px;
-          background: #6366f1;
-          color: white;
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .metric-trend {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          color: #10b981;
-        }
-
-        .metric-change {
-          font-size: 12px;
-          font-weight: 600;
-          background: #dcfce7;
-          padding: 3px 8px;
-          border-radius: 12px;
-          border: 1px solid #bbf7d0;
-        }
-
-        .metric-content h2 {
-          font-size: 28px;
-          font-weight: 700;
-          color: #1e293b;
-          margin: 0 0 6px 0;
-          letter-spacing: -0.8px;
-        }
-
-        .metric-content p {
-          color: #64748b;
-          font-size: 13px;
-          margin: 0;
-          font-weight: 500;
-        }
-
-        .content-grid {
-          display: grid;
-          grid-template-columns: 2fr 1fr;
-          gap: 20px;
-        }
-
-        @media (max-width: 1024px) {
-          .content-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-
-        .card {
-          background: #ffffff;
-          border: 1px solid #e2e8f0;
-          border-radius: 12px;
-          overflow: hidden;
-          transition: all 0.2s ease;
-        }
-
-        .card:hover {
-          border-color: #cbd5e1;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        .card-header {
-          padding: 20px;
-          border-bottom: 1px solid #f1f5f9;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .card-header h3 {
-          font-size: 16px;
-          font-weight: 600;
-          color: #1e293b;
-          margin: 0;
-          letter-spacing: -0.2px;
-        }
-
-        .card-action {
-          background: none;
-          border: none;
-          color: #6366f1;
-          font-size: 13px;
-          font-weight: 500;
-          cursor: pointer;
-          padding: 4px 8px;
-          border-radius: 6px;
-          transition: all 0.2s ease;
-        }
-
-        .card-action:hover {
-          background: #eef2ff;
-        }
-
-        .card-content {
-          padding: 20px;
-        }
-
-        .activity-list {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-
-        .activity-item {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 12px;
-          border-radius: 8px;
-          transition: background-color 0.2s ease;
-        }
-
-        .activity-item:hover {
-          background: #f8fafc;
-        }
-
-        .activity-avatar {
-          width: 32px;
-          height: 32px;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          flex-shrink: 0;
-        }
-
-        .activity-avatar.success {
-          background: #10b981;
-        }
-
-        .activity-avatar.info {
-          background: #3b82f6;
-        }
-
-        .activity-avatar.warning {
-          background: #f59e0b;
-        }
-
-        .activity-content {
-          flex: 1;
-        }
-
-        .activity-content p {
-          font-size: 13px;
-          color: #1e293b;
-          margin: 0 0 3px 0;
-          font-weight: 400;
-        }
-
-        .activity-content span {
-          font-size: 11px;
-          color: #64748b;
-          font-weight: 400;
-        }
-
-        .activity-amount {
-          font-size: 13px;
-          font-weight: 600;
-          color: #10b981;
-        }
-
-        .actions-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 12px;
-        }
-
-        .action-card {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 8px;
-          background: #f8fafc;
-          border: 1px solid #e2e8f0;
-          padding: 16px 12px;
-          border-radius: 10px;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          text-align: center;
-        }
-
-        .action-card:hover {
-          background: #6366f1;
-          color: white;
-          border-color: #6366f1;
-        }
-
-        .action-icon {
-          width: 36px;
-          height: 36px;
-          background: #ffffff;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #6366f1;
-          transition: all 0.2s ease;
-        }
-
-        .action-card:hover .action-icon {
-          background: rgba(255, 255, 255, 0.2);
-          color: white;
-        }
-
-        .action-card span {
-          font-size: 12px;
-          font-weight: 500;
-        }
-      `}</style>
     </div>
   );
 };

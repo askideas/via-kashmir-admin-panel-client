@@ -23,20 +23,24 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <div className="brand">
-          <div className="brand-icon">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 font-sans p-6">
+      <div className="bg-white w-full max-w-sm p-10 px-8 rounded-xl shadow-lg border border-slate-200">
+        <div className="text-center mb-10">
+          <div className="w-14 h-14 bg-indigo-500 text-white rounded-lg flex items-center justify-center mx-auto mb-5">
             <Shield size={20} strokeWidth={2} />
           </div>
-          <h1>Via Kashmir</h1>
-          <p>Admin Panel</p>
+          <h1 className="text-2xl font-semibold text-slate-800 mb-1.5 tracking-tight">Via Kashmir</h1>
+          <p className="text-sm text-slate-500 font-normal">Admin Panel</p>
         </div>
         
-        <form onSubmit={handleSubmit} className="login-form">
-          {error && <div className="error">{error}</div>}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-600 p-3 text-sm text-center rounded-md">
+              {error}
+            </div>
+          )}
           
-          <div className="field">
+          <div className="relative">
             <input
               type="email"
               id="email"
@@ -44,12 +48,18 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder=" "
               required
+              className="w-full pt-4 pb-1.5 border-0 bg-transparent text-sm font-normal text-slate-800 outline-none transition-all duration-200 peer"
             />
-            <label htmlFor="email">Email Address</label>
-            <div className="field-line"></div>
+            <label 
+              htmlFor="email"
+              className="absolute top-4 left-0 text-sm text-slate-500 font-normal transition-all duration-200 pointer-events-none peer-focus:top-0 peer-focus:text-xs peer-focus:text-indigo-500 peer-focus:font-medium peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-indigo-500 peer-[:not(:placeholder-shown)]:font-medium"
+            >
+              Email Address
+            </label>
+            <div className="absolute bottom-0 left-0 w-full h-px bg-slate-200 peer-focus:bg-indigo-500 transition-colors duration-200"></div>
           </div>
 
-          <div className="field">
+          <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
               id="password"
@@ -57,182 +67,33 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder=" "
               required
+              className="w-full pt-4 pb-1.5 border-0 bg-transparent text-sm font-normal text-slate-800 outline-none transition-all duration-200 peer"
             />
-            <label htmlFor="password">Password</label>
-            <div className="field-line"></div>
+            <label 
+              htmlFor="password"
+              className="absolute top-4 left-0 text-sm text-slate-500 font-normal transition-all duration-200 pointer-events-none peer-focus:top-0 peer-focus:text-xs peer-focus:text-indigo-500 peer-focus:font-medium peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-indigo-500 peer-[:not(:placeholder-shown)]:font-medium"
+            >
+              Password
+            </label>
+            <div className="absolute bottom-0 left-0 w-full h-px bg-slate-200 peer-focus:bg-indigo-500 transition-colors duration-200"></div>
             <button
               type="button"
-              className="password-toggle"
+              className="absolute right-0 top-3 bg-transparent border-0 text-slate-500 cursor-pointer p-1.5 rounded-md transition-all duration-200 hover:text-indigo-500 hover:bg-slate-50"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
 
-          <button type="submit" disabled={loading} className="submit-btn">
+          <button 
+            type="submit" 
+            disabled={loading} 
+            className="bg-indigo-500 text-white border-0 py-3.5 px-6 text-sm font-medium cursor-pointer rounded-lg transition-all duration-200 mt-2 hover:bg-indigo-600 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
       </div>
-      
-      <style jsx>{`
-        .login-container {
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: #f8fafc;
-          font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-          padding: 24px;
-        }
-
-        .login-card {
-          background: #ffffff;
-          width: 100%;
-          max-width: 380px;
-          padding: 40px 32px;
-          border-radius: 12px;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-          border: 1px solid #e2e8f0;
-        }
-
-        .brand {
-          text-align: center;
-          margin-bottom: 40px;
-        }
-
-        .brand-icon {
-          width: 56px;
-          height: 56px;
-          background: #6366f1;
-          color: white;
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 20px;
-        }
-
-        .brand h1 {
-          font-size: 24px;
-          font-weight: 600;
-          color: #1e293b;
-          margin: 0 0 6px 0;
-          letter-spacing: -0.3px;
-        }
-
-        .brand p {
-          font-size: 14px;
-          color: #64748b;
-          margin: 0;
-          font-weight: 400;
-        }
-
-        .login-form {
-          display: flex;
-          flex-direction: column;
-          gap: 24px;
-        }
-
-        .field {
-          position: relative;
-        }
-
-        .field input {
-          width: 100%;
-          padding: 16px 0 6px 0;
-          border: none;
-          background: transparent;
-          font-size: 15px;
-          font-weight: 400;
-          color: #1e293b;
-          outline: none;
-          transition: all 0.2s ease;
-        }
-
-        .field input:focus + label,
-        .field input:not(:placeholder-shown) + label {
-          top: 0;
-          font-size: 12px;
-          color: #6366f1;
-          font-weight: 500;
-        }
-
-        .field input:focus ~ .field-line {
-          background: #6366f1;
-        }
-
-        .field label {
-          position: absolute;
-          top: 16px;
-          left: 0;
-          font-size: 15px;
-          color: #64748b;
-          font-weight: 400;
-          transition: all 0.2s ease;
-          pointer-events: none;
-        }
-
-        .field-line {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 1px;
-          background: #e2e8f0;
-          transition: background 0.2s ease;
-        }
-
-        .password-toggle {
-          position: absolute;
-          right: 0;
-          top: 12px;
-          background: none;
-          border: none;
-          color: #64748b;
-          cursor: pointer;
-          padding: 6px;
-          border-radius: 6px;
-          transition: all 0.2s ease;
-        }
-
-        .password-toggle:hover {
-          color: #6366f1;
-          background: #f1f5f9;
-        }
-
-        .submit-btn {
-          background: #6366f1;
-          color: white;
-          border: none;
-          padding: 14px 24px;
-          font-size: 15px;
-          font-weight: 500;
-          cursor: pointer;
-          border-radius: 8px;
-          transition: all 0.2s ease;
-          margin-top: 8px;
-        }
-
-        .submit-btn:hover:not(:disabled) {
-          background: #5855eb;
-        }
-
-        .submit-btn:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
-
-        .error {
-          background: #fef2f2;
-          border: 1px solid #fecaca;
-          color: #dc2626;
-          padding: 12px;
-          font-size: 13px;
-          text-align: center;
-          border-radius: 6px;
-        }
-      `}</style>
     </div>
   );
 };
