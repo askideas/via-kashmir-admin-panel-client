@@ -5,6 +5,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import PlaceholderPage from './pages/PlaceholderPage';
+import Categories from './pages/Categories';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
                   <Route path="/" element={<Navigate to="/dashboard" replace />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/bookings" element={<PlaceholderPage title="Bookings" />} />
+                  <Route path="/categories" element={<Categories />} />
                   <Route path="/vendors" element={<PlaceholderPage title="Vendors" />} />
                   <Route path="/users" element={<PlaceholderPage title="Users" />} />
                   <Route path="/payments" element={<PlaceholderPage title="Payments" />} />

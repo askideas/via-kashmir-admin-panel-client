@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, connectAuthEmulator } from 'firebase/auth';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAffJoH8s5NTvLvYBOhMmuCn6MXMO3IVGI",
@@ -12,5 +13,14 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+// Initialize Firebase services
 export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+// Enable persistence for offline support (optional)
+// enableNetwork(db);
+
+console.log('Firebase initialized successfully');
+
 export default app;

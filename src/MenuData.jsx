@@ -1,4 +1,4 @@
-import { Bell, Building2, Folders, IdCardLanyard, IndianRupee, LayoutDashboard, Megaphone, Users } from "lucide-react";
+import { Bell, Building2, ChartBarStacked, Folders, IdCardLanyard, IndianRupee, LayoutDashboard, Megaphone, Users } from "lucide-react";
 
 export const menuData = [
     {
@@ -12,6 +12,12 @@ export const menuData = [
         label: 'Bookings',
         icon: <Folders />,
         link: '/bookings'
+    },
+    {
+        id: 'categories',
+        label: 'Categories',
+        icon: <ChartBarStacked />,
+        link: '/categories'
     },
     {
         id: 'vendors',
