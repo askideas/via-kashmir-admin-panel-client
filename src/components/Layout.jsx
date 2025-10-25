@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LogOut, Menu, X } from 'lucide-react';
+import { LogOut, Menu, X, Sparkles, Shield } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { menuData } from '../MenuData';
 
@@ -21,13 +21,20 @@ const Layout = ({ children }) => {
     <div className="layout">
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
+        <div className="sidebar-gradient"></div>
         <div className="sidebar-header">
-          <h2>Via Kashmir</h2>
+          <div className="brand-logo">
+            <Shield size={18} strokeWidth={2} />
+          </div>
+          <div className="brand-text">
+            <h2>Via Kashmir</h2>
+            <span>Admin Panel</span>
+          </div>
           <button 
             className="close-sidebar"
             onClick={() => setSidebarOpen(false)}
           >
-            <X size={24} />
+            <X size={20} strokeWidth={1.5} />
           </button>
         </div>
         
@@ -39,8 +46,9 @@ const Layout = ({ children }) => {
               className={`nav-item ${location.pathname === item.link ? 'active' : ''}`}
               onClick={() => setSidebarOpen(false)}
             >
-              <span className="nav-icon">{item.icon}</span>
+              <span className="nav-icon">{React.cloneElement(item.icon, { size: 20, strokeWidth: 1.5 })}</span>
               <span className="nav-label">{item.label}</span>
+              <div className="nav-indicator"></div>
             </Link>
           ))}
         </nav>
@@ -50,18 +58,33 @@ const Layout = ({ children }) => {
       <div className="main-content">
         {/* Header */}
         <header className="header">
-          <button 
-            className="menu-toggle"
-            onClick={() => setSidebarOpen(true)}
-          >
-            <Menu size={24} />
-          </button>
+          <div className="header-left">
+            <button 
+              className="menu-toggle"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <Menu size={20} strokeWidth={1.5} />
+            </button>
+            <div className="breadcrumb">
+              <span className="breadcrumb-current">
+                {menuData.find(item => item.link === location.pathname)?.label || 'Dashboard'}
+              </span>
+            </div>
+          </div>
           
           <div className="header-right">
-            <span className="user-email">{currentUser?.email}</span>
+            <div className="user-info">
+              <div className="user-avatar">
+                {currentUser?.email?.charAt(0).toUpperCase()}
+              </div>
+              <div className="user-details">
+                <span className="user-name">Admin</span>
+                <span className="user-email">{currentUser?.email}</span>
+              </div>
+            </div>
             <button className="logout-button" onClick={handleLogout}>
-              <LogOut size={20} />
-              Logout
+              <LogOut size={16} strokeWidth={1.5} />
+              <span>Sign Out</span>
             </button>
           </div>
         </header>
@@ -80,12 +103,13 @@ const Layout = ({ children }) => {
           display: flex;
           height: 100vh;
           background: #f8fafc;
+          font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
         }
 
         .sidebar {
-          width: 280px;
-          background: #315149;
-          color: white;
+          width: 260px;
+          background: #ffffff;
+          border-right: 1px solid #e2e8f0;
           transform: translateX(-100%);
           transition: transform 0.3s ease;
           position: fixed;
@@ -94,6 +118,11 @@ const Layout = ({ children }) => {
           height: 100vh;
           z-index: 1000;
           overflow-y: auto;
+          position: relative;
+        }
+
+        .sidebar-gradient {
+          display: none;
         }
 
         .sidebar-open {
@@ -108,26 +137,56 @@ const Layout = ({ children }) => {
         }
 
         .sidebar-header {
-          padding: 24px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          padding: 24px 20px;
+          border-bottom: 1px solid #f1f5f9;
           display: flex;
-          justify-content: space-between;
           align-items: center;
+          gap: 12px;
+          position: relative;
         }
 
-        .sidebar-header h2 {
-          font-size: 24px;
-          font-weight: 700;
+        .brand-logo {
+          width: 40px;
+          height: 40px;
+          background: #6366f1;
+          color: white;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .brand-text h2 {
+          font-size: 18px;
+          font-weight: 600;
+          color: #1e293b;
           margin: 0;
+          letter-spacing: -0.2px;
+        }
+
+        .brand-text span {
+          font-size: 11px;
+          color: #64748b;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.3px;
         }
 
         .close-sidebar {
+          position: absolute;
+          right: 20px;
           background: none;
           border: none;
-          color: white;
+          color: #64748b;
           cursor: pointer;
-          padding: 0;
-          display: block;
+          padding: 6px;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+        }
+
+        .close-sidebar:hover {
+          background: #f1f5f9;
+          color: #6366f1;
         }
 
         @media (min-width: 768px) {
@@ -143,31 +202,52 @@ const Layout = ({ children }) => {
         .nav-item {
           display: flex;
           align-items: center;
-          padding: 16px 24px;
-          color: rgba(255, 255, 255, 0.8);
+          padding: 12px 20px;
+          color: #64748b;
           text-decoration: none;
-          transition: all 0.2s;
-          border-left: 4px solid transparent;
+          transition: all 0.2s ease;
+          font-size: 14px;
+          font-weight: 500;
+          position: relative;
+          margin: 0 8px 2px 8px;
+          border-radius: 8px;
         }
 
         .nav-item:hover {
-          background: rgba(255, 255, 255, 0.1);
-          color: white;
+          background: #f8fafc;
+          color: #6366f1;
         }
 
         .nav-item.active {
-          background: rgba(255, 255, 255, 0.1);
-          color: white;
-          border-left-color: white;
+          background: #eef2ff;
+          color: #6366f1;
+          font-weight: 600;
+        }
+
+        .nav-item.active .nav-indicator {
+          opacity: 1;
         }
 
         .nav-icon {
-          margin-right: 16px;
+          margin-right: 12px;
           flex-shrink: 0;
         }
 
         .nav-label {
-          font-weight: 500;
+          font-size: 14px;
+        }
+
+        .nav-indicator {
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 3px;
+          height: 16px;
+          background: #6366f1;
+          border-radius: 0 2px 2px 0;
+          opacity: 0;
+          transition: opacity 0.2s ease;
         }
 
         .main-content {
@@ -177,16 +257,11 @@ const Layout = ({ children }) => {
           min-width: 0;
         }
 
-        @media (min-width: 768px) {
-          .main-content {
-            margin-left: 0;
-          }
-        }
-
         .header {
-          background: white;
-          padding: 16px 24px;
-          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+          background: #ffffff;
+          padding: 0 24px;
+          height: 64px;
+          border-bottom: 1px solid #e2e8f0;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -195,20 +270,28 @@ const Layout = ({ children }) => {
           z-index: 100;
         }
 
+        .header-left {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+
         .menu-toggle {
           background: none;
           border: none;
-          color: #315149;
+          color: #64748b;
           cursor: pointer;
           padding: 8px;
           border-radius: 8px;
           display: flex;
           align-items: center;
           justify-content: center;
+          transition: all 0.2s ease;
         }
 
         .menu-toggle:hover {
           background: #f1f5f9;
+          color: #6366f1;
         }
 
         @media (min-width: 768px) {
@@ -217,40 +300,77 @@ const Layout = ({ children }) => {
           }
         }
 
+        .breadcrumb-current {
+          font-size: 16px;
+          font-weight: 600;
+          color: #1e293b;
+        }
+
         .header-right {
           display: flex;
           align-items: center;
           gap: 16px;
         }
 
-        .user-email {
-          color: #64748b;
+        .user-info {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .user-avatar {
+          width: 32px;
+          height: 32px;
+          background: #6366f1;
+          color: white;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
           font-size: 14px;
+        }
+
+        .user-details {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .user-name {
+          font-size: 13px;
+          font-weight: 600;
+          color: #1e293b;
+        }
+
+        .user-email {
+          font-size: 11px;
+          color: #64748b;
         }
 
         .logout-button {
           display: flex;
           align-items: center;
-          gap: 8px;
-          background: #315149;
-          color: white;
-          border: none;
-          padding: 8px 16px;
+          gap: 6px;
+          background: #fef2f2;
+          color: #dc2626;
+          border: 1px solid #fecaca;
+          padding: 8px 12px;
           border-radius: 8px;
           cursor: pointer;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 500;
-          transition: background-color 0.2s;
+          transition: all 0.2s ease;
         }
 
         .logout-button:hover {
-          background: #2a453e;
+          background: #fecaca;
         }
 
         .page-content {
           flex: 1;
           padding: 24px;
           overflow-y: auto;
+          background: #f8fafc;
         }
 
         .overlay {
@@ -259,7 +379,7 @@ const Layout = ({ children }) => {
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(0, 0, 0, 0.5);
+          background: rgba(0, 0, 0, 0.4);
           z-index: 999;
         }
 
