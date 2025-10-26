@@ -242,7 +242,7 @@ const UserDetails = () => {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto font-sans px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto font-sans">
         <div className="flex justify-center items-center py-20">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
         </div>
@@ -252,7 +252,7 @@ const UserDetails = () => {
 
   if (!userData) {
     return (
-      <div className="max-w-7xl mx-auto font-sans px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto font-sans">
         <div className="text-center py-20">
           <div className="text-slate-400 mb-4">User not found</div>
           <NavLink to="/users" className="text-indigo-500 hover:text-indigo-600 font-medium cursor-pointer">
@@ -264,7 +264,7 @@ const UserDetails = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto font-sans px-4 sm:px-6 lg:px-8">
+    <div className="max-w-7xl mx-auto font-sans">
       {/* Header */}
       <div className="mb-6">
         <NavLink 
