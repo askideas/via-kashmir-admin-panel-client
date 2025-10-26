@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, query, orderBy, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase/config';
 import { Plus, Search, Edit, Trash2, Save, X } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
@@ -15,20 +14,39 @@ const Categories = () => {
   });
   const [submitting, setSubmitting] = useState(false);
 
-  // Fetch categories from Firestore
+  const API_BASE_URL = import.meta.env.VITE_VIA_KASHMIR_ADMIN_SERVER_API || 'https://via-kashmir-admin-panel-server.vercel.app';
+
+  // Fetch categories from API
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const q = query(collection(db, 'categories'), orderBy('createdAt', 'desc'));
-      const querySnapshot = await getDocs(q);
-      const categoriesData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setCategories(categoriesData);
-      setFilteredCategories(categoriesData);
+      const response = await fetch(`${API_BASE_URL}/categories`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      // Handle both array response and object with data property
+      const categoriesArray = Array.isArray(data) ? data : (data.categories || data.data || []);
+      setCategories(categoriesArray);
+      setFilteredCategories(categoriesArray);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      const errorMessage = error.message.includes('HTTP error') 
+        ? 'Error communicating with server. Please check your connection and try again.'
+        : error.message || 'Error fetching categories. Please try again.';
+      toast.error(errorMessage, { 
+        autoClose: 1500,
+        hideProgressBar: true 
+      });
+      // Set empty arrays to prevent undefined errors
+      setCategories([]);
+      setFilteredCategories([]);
     } finally {
       setLoading(false);
     }
@@ -40,7 +58,7 @@ const Categories = () => {
       setFilteredCategories(categories);
     } else {
       const filtered = categories.filter(category =>
-        category.name.toLowerCase().includes(searchTerm.toLowerCase())
+        category && category.name && category.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredCategories(filtered);
     }
@@ -61,20 +79,49 @@ const Categories = () => {
       
       if (editingCategory) {
         // Update existing category
-        const categoryRef = doc(db, 'categories', editingCategory.id);
-        await updateDoc(categoryRef, {
-          name: formData.name.trim(),
-          updatedAt: serverTimestamp()
+        const categoryId = editingCategory.id || editingCategory._id;
+        const response = await fetch(`${API_BASE_URL}/categories/${categoryId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name.trim(),
+          }),
         });
-        console.log('Category updated successfully');
+        
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        }
+        
+        const updatedCategory = await response.json();
+        toast.success('Category updated successfully!', { 
+          autoClose: 1500,
+          hideProgressBar: true 
+        });
       } else {
         // Add new category
-        const docRef = await addDoc(collection(db, 'categories'), {
-          name: formData.name.trim(),
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
+        const response = await fetch(`${API_BASE_URL}/categories`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name.trim(),
+          }),
         });
-        console.log('Category added with ID: ', docRef.id);
+        
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        }
+        
+        const newCategory = await response.json();
+        toast.success('Category added successfully!', { 
+          autoClose: 1500,
+          hideProgressBar: true 
+        });
       }
       
       // Reset form and refresh data
@@ -83,8 +130,13 @@ const Categories = () => {
       setEditingCategory(null);
       await fetchCategories();
     } catch (error) {
-      console.error('Error saving category:', error);
-      alert('Error saving category. Please try again.');
+      const errorMessage = error.message.includes('HTTP error') 
+        ? 'Error communicating with server. Please check your connection and try again.'
+        : error.message || 'Error saving category. Please try again.';
+      toast.error(errorMessage, { 
+        autoClose: 1500,
+        hideProgressBar: true 
+      });
     } finally {
       setSubmitting(false);
     }
@@ -101,12 +153,31 @@ const Categories = () => {
   const handleDelete = async (categoryId) => {
     if (window.confirm('Are you sure you want to delete this category?')) {
       try {
-        await deleteDoc(doc(db, 'categories', categoryId));
-        console.log('Category deleted successfully');
+        const response = await fetch(`${API_BASE_URL}/categories/${categoryId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        }
+        
+        toast.success('Category deleted successfully!', { 
+          autoClose: 1500,
+          hideProgressBar: true 
+        });
         await fetchCategories();
       } catch (error) {
-        console.error('Error deleting category:', error);
-        alert('Error deleting category. Please try again.');
+        const errorMessage = error.message.includes('HTTP error') 
+          ? 'Error communicating with server. Please check your connection and try again.'
+          : error.message || 'Error deleting category. Please try again.';
+        toast.error(errorMessage, { 
+          autoClose: 1500,
+          hideProgressBar: true 
+        });
       }
     }
   };
@@ -234,19 +305,19 @@ const Categories = () => {
             <div className="grid gap-4">
               {filteredCategories.map((category) => (
                 <div
-                  key={category.id}
+                  key={category.id || category._id || Math.random()}
                   className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:border-slate-300 transition-colors"
                 >
                   <div className="flex-1">
-                    <h3 className="font-medium text-slate-800 mb-1">{category.name}</h3>
+                    <h3 className="font-medium text-slate-800 mb-1">{category.name || 'Unnamed Category'}</h3>
                     <div className="flex items-center gap-4 text-sm text-slate-500">
-                      <span>ID: {category.id}</span>
+                      <span>ID: {category.id || category._id || 'N/A'}</span>
                       <span>
-                        Created: {category.createdAt?.toDate ? category.createdAt?.toDate().toLocaleDateString() : 'Processing...'}
+                        Created: {category.createdAt ? new Date(category.createdAt).toLocaleDateString() : 'N/A'}
                       </span>
                       {category.updatedAt && category.updatedAt !== category.createdAt && (
                         <span>
-                          Updated: {category.updatedAt?.toDate ? category.updatedAt?.toDate().toLocaleDateString() : 'Processing...'}
+                          Updated: {new Date(category.updatedAt).toLocaleDateString()}
                         </span>
                       )}
                     </div>
@@ -262,7 +333,7 @@ const Categories = () => {
                     </button>
                     
                     <button
-                      onClick={() => handleDelete(category.id)}
+                      onClick={() => handleDelete(category.id || category._id)}
                       className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200 cursor-pointer"
                       title="Delete category"
                     >
