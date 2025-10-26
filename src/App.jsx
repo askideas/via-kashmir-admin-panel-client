@@ -11,6 +11,7 @@ import Categories from './pages/Categories';
 import Users from './pages/Users';
 import UserDetails from './pages/UserDetails';
 import Appnotifications from './pages/Appnotifications';
+import Employees from './pages/Employees';
 
 const App = () => {
   return (
@@ -33,7 +34,8 @@ const App = () => {
                   <Route path="/payments" element={<PlaceholderPage title="Payments" />} />
                   <Route path="/appnotifications" element={<Appnotifications />} />
                   <Route path="/advertisements" element={<PlaceholderPage title="Vendors Advertisements" />} />
-                  <Route path="/manageemployees" element={<PlaceholderPage title="Manage Employees" />} />
+                  <Route path="/manageemployees" element={<Employees />} />
+                  <Route path="/employees/add" element={<PlaceholderPage title="Add Employee" />} />
                 </Routes>
               </Layout>
             </ProtectedRoute>
