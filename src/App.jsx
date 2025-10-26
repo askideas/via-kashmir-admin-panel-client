@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import PlaceholderPage from './pages/PlaceholderPage';
 import Categories from './pages/Categories';
 import Users from './pages/Users';
+import UserDetails from './pages/UserDetails';
 
 const App = () => {
   return (
@@ -27,7 +28,7 @@ const App = () => {
                   <Route path="/vendors" element={<PlaceholderPage title="Vendors" />} />
                   <Route path="/users" element={<Users />} />
                   <Route path="/users/add" element={<PlaceholderPage title="Add User" />} />
-                  <Route path="/users/:id" element={<PlaceholderPage title="User Details" />} />
+                  <Route path="/users/:id" element={<UserDetails />} />
                   <Route path="/payments" element={<PlaceholderPage title="Payments" />} />
                   <Route path="/appnotifications" element={<PlaceholderPage title="App Notifications" />} />
                   <Route path="/advertisements" element={<PlaceholderPage title="Vendors Advertisements" />} />
