@@ -255,34 +255,128 @@ const AddEmployee = () => {
       
       // Create FormData for file uploads
       const submitData = new FormData();
+      
+      // Add all form fields to FormData
       Object.keys(formData).forEach(key => {
         if (key === 'accessRights') {
+          // Convert access rights array to JSON string
           submitData.append(key, JSON.stringify(formData[key]));
-        } else if (formData[key]) {
+        } else if (key === 'profilePicturePreview') {
+          // Skip preview data, only send actual file
+          return;
+        } else if (formData[key] !== null && formData[key] !== '' && formData[key] !== undefined) {
           submitData.append(key, formData[key]);
         }
       });
 
-      // Replace with actual API call
-      // const response = await fetch(`${API_BASE_URL}api/employees`, {
-      //   method: 'POST',
-      //   body: submitData
-      // });
+      // Make API call to store employee data
+      const API_BASE_URL = 'https://via-kashmir-admin-panel-server.vercel.app';
+      
+      console.log('Submitting to:', `${API_BASE_URL}/employees`);
+      console.log('FormData contents:');
+      for (let [key, value] of submitData.entries()) {
+        if (value instanceof File) {
+          console.log(`${key}: [File] ${value.name} (${value.size} bytes, ${value.type})`);
+        } else {
+          console.log(`${key}:`, value);
+        }
+      }
+      
+      // Verify files are attached
+      console.log('Profile Picture File:', formData.profilePicture);
+      console.log('Government Proof File:', formData.governmentProof);
+      
+      const response = await fetch(`${API_BASE_URL}/employees`, {
+        method: 'POST',
+        body: submitData,
+        // Don't set Content-Type header when using FormData
+        // The browser will set it automatically with the correct boundary
+      });
 
-      // Mock success
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      
+      toast.success('Employee added successfully!', {
+        autoClose: 1500,
+        hideProgressBar: true
+      });
+      
+      setSubmitting(false);
+      
+      // Reset form after successful submission
+      setFormData({
+        profilePicture: null,
+        profilePicturePreview: null,
+        firstName: '',
+        lastName: '',
+        email: '',
+        mobileNumber: '',
+        password: '',
+        confirmPassword: '',
+        accessRights: [],
+        governmentProof: null,
+        governmentProofType: '',
+        governmentProofNumber: '',
+        yearsOfExperience: '',
+        lastCompanyName: '',
+        lastJobTitle: '',
+        lastSalary: '',
+        reasonForLeaving: '',
+        bankName: '',
+        accountNumber: '',
+        confirmAccountNumber: '',
+        ifscCode: '',
+        accountHolderName: '',
+        dateOfBirth: '',
+        gender: '',
+        maritalStatus: '',
+        fatherName: '',
+        motherName: '',
+        emergencyContactName: '',
+        emergencyContactNumber: '',
+        emergencyContactRelation: '',
+        currentAddress: '',
+        permanentAddress: '',
+        city: '',
+        state: '',
+        pincode: '',
+        country: 'India',
+        joiningDate: '',
+        department: '',
+        designation: '',
+        employmentType: '',
+        reportingManager: '',
+        probationPeriod: '',
+        bloodGroup: '',
+        medicalConditions: '',
+        hobbies: ''
+      });
+      setSameAsCurrentAddress(false);
+      
+      // Optionally navigate back to employees list after a delay
       setTimeout(() => {
-        toast.success('Employee added successfully!', {
-          autoClose: 1500,
-          hideProgressBar: true
-        });
-        setSubmitting(false);
-        // Navigate back to employees list
-        // navigate('/manageemployees');
+        window.location.href = '/manageemployees';
       }, 2000);
 
     } catch (error) {
-      toast.error('Error adding employee. Please try again.', {
-        autoClose: 1500,
+      console.error('Error adding employee:', error);
+      
+      let errorMessage = 'Error adding employee. Please try again.';
+      
+      if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
+        errorMessage = 'Network error. Please check your internet connection and try again.';
+      } else if (error.message.includes('HTTP error')) {
+        errorMessage = 'Server error. Please try again later.';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      toast.error(errorMessage, {
+        autoClose: 3000,
         hideProgressBar: true
       });
       setSubmitting(false);
