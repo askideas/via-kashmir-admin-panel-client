@@ -255,7 +255,7 @@ const UserDetails = () => {
       <div className="max-w-7xl mx-auto font-sans px-4 sm:px-6 lg:px-8">
         <div className="text-center py-20">
           <div className="text-slate-400 mb-4">User not found</div>
-          <NavLink to="/users" className="text-indigo-500 hover:text-indigo-600 font-medium">
+          <NavLink to="/users" className="text-indigo-500 hover:text-indigo-600 font-medium cursor-pointer">
             Back to Users
           </NavLink>
         </div>
@@ -269,7 +269,7 @@ const UserDetails = () => {
       <div className="mb-6">
         <NavLink 
           to="/users" 
-          className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 mb-4 transition-colors"
+          className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 mb-4 transition-colors cursor-pointer"
         >
           <ArrowLeft size={20} />
           Back to Users
@@ -329,7 +329,7 @@ const UserDetails = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 sm:px-6 py-4 font-medium text-sm whitespace-nowrap transition-colors border-b-2 ${
+                  className={`flex items-center gap-2 px-4 sm:px-6 py-4 font-medium text-sm whitespace-nowrap transition-colors border-b-2 cursor-pointer ${
                     activeTab === tab.id
                       ? 'text-indigo-600 border-indigo-500 bg-indigo-50'
                       : 'text-slate-500 border-transparent hover:text-slate-700 hover:border-slate-300'
@@ -461,7 +461,7 @@ const UserDetails = () => {
                           <div className="text-lg font-semibold text-slate-900">₹{booking.amount.toLocaleString()}</div>
                           <div className="text-sm text-slate-500">Amount</div>
                         </div>
-                        <button className="p-2 text-slate-400 hover:text-indigo-600 transition-colors">
+                        <button className="p-2 text-slate-400 hover:text-indigo-600 transition-colors cursor-pointer">
                           <Eye size={16} />
                         </button>
                       </div>
@@ -516,7 +516,7 @@ const UserDetails = () => {
                           ))}
                         </div>
                       </div>
-                      <button className="p-2 text-slate-400 hover:text-indigo-600 transition-colors">
+                      <button className="p-2 text-slate-400 hover:text-indigo-600 transition-colors cursor-pointer">
                         <Eye size={16} />
                       </button>
                     </div>
