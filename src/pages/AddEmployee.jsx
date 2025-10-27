@@ -277,16 +277,6 @@ const AddEmployee = () => {
       // Make API call to store employee data
       const API_BASE_URL = import.meta.env.VITE_VIA_KASHMIR_ADMIN_SERVER_API || 'https://via-kashmir-admin-panel-server.vercel.app';
       
-      console.log('Submitting to:', `${API_BASE_URL}/employees`);
-      console.log('FormData contents:');
-      for (let [key, value] of submitData.entries()) {
-        if (value instanceof File) {
-          console.log(`${key}: [File] ${value.name} (${value.size} bytes, ${value.type})`);
-        } else {
-          console.log(`${key}:`, value);
-        }
-      }
-      
       const response = await fetch(`${API_BASE_URL}/employees`, {
         method: 'POST',
         headers: {
@@ -303,7 +293,6 @@ const AddEmployee = () => {
       }
 
       const result = await response.json();
-      console.log('Employee added successfully:', result);
       
       toast.success('Employee added successfully!', {
         autoClose: 1500,
@@ -367,8 +356,6 @@ const AddEmployee = () => {
       }, 2000);
 
     } catch (error) {
-      console.error('Error adding employee:', error);
-      
       let errorMessage = 'Error adding employee. Please try again.';
       
       if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
@@ -579,7 +566,7 @@ const AddEmployee = () => {
                     type="checkbox"
                     checked={formData.accessRights.includes(menu.id)}
                     onChange={() => handleAccessRightChange(menu.id)}
-                    className="form-checkbox h-4 w-4 text-indigo-600 rounded focus:ring-indigo-500"
+                    className="form-checkbox h-4 w-4 text-indigo-600 rounded focus:ring-indigo-500 cursor-pointer"
                   />
                   <span className="text-sm text-slate-700">{menu.label}</span>
                 </label>
@@ -965,7 +952,7 @@ const AddEmployee = () => {
                     id="sameAddress"
                     checked={sameAsCurrentAddress}
                     onChange={handleSameAddressChange}
-                    className="form-checkbox h-4 w-4 text-slate-600 rounded focus:ring-slate-500"
+                    className="form-checkbox h-4 w-4 text-slate-600 rounded focus:ring-slate-500 cursor-pointer"
                   />
                   <label htmlFor="sameAddress" className="ml-2 text-sm text-slate-700 cursor-pointer">
                     Permanent address is same as current address

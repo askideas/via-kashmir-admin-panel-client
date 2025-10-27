@@ -53,6 +53,6 @@ export const menuData = [
         id: 'manageemployees',
         label: 'Manage Employees',
         icon: <IdCardLanyard />,
-        link: '/manageemployees'
+        link: '/employees'
     }
 ]

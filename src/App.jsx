@@ -13,6 +13,7 @@ import UserDetails from './pages/UserDetails';
 import Appnotifications from './pages/Appnotifications';
 import Employees from './pages/Employees';
 import AddEmployee from './pages/AddEmployee';
+import EmployeeDetails from './pages/EmployeeDetails';
 
 const App = () => {
   return (
@@ -35,7 +36,8 @@ const App = () => {
                   <Route path="/payments" element={<PlaceholderPage title="Payments" />} />
                   <Route path="/appnotifications" element={<Appnotifications />} />
                   <Route path="/advertisements" element={<PlaceholderPage title="Vendors Advertisements" />} />
-                  <Route path="/manageemployees" element={<Employees />} />
+                  <Route path="/employees" element={<Employees />} />
+                  <Route path="/employees/:id" element={<EmployeeDetails />} />
                   <Route path="/employees/add" element={<AddEmployee title="Add Employee" />} />
                 </Routes>
               </Layout>

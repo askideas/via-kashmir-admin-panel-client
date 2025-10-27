@@ -14,7 +14,6 @@ import {
   Calendar, 
   Briefcase,
   Eye,
-  Edit,
   Trash2
 } from 'lucide-react';
 import { toast } from 'react-toastify';
@@ -57,7 +56,6 @@ const Employees = () => {
       }
       
       const data = await response.json();
-      console.log('Employees API Response:', data);
       
       // Handle both array response and object with data property
       const employeesArray = Array.isArray(data) ? data : (data.employees || data.data || []);
@@ -72,7 +70,6 @@ const Employees = () => {
       setEmployees(sortedEmployees);
       setFilteredEmployees(sortedEmployees);
     } catch (error) {
-      console.error('Error fetching employees:', error);
       const errorMessage = error.message.includes('HTTP error') 
         ? 'Error communicating with server. Please check your connection and try again.'
         : error.message || 'Error fetching employees. Please try again.';
@@ -211,7 +208,6 @@ const Employees = () => {
         });
         await fetchEmployees(); // Refresh the list
       } catch (error) {
-        console.error('Error deleting employee:', error);
         const errorMessage = error.message.includes('HTTP error') 
           ? 'Error communicating with server. Please check your connection and try again.'
           : error.message || 'Error deleting employee. Please try again.';
@@ -497,18 +493,14 @@ const Employees = () => {
                           ID: {employee.employeeId}
                         </div>
                         <div className="flex items-center gap-1">
-                          <button
+                          <NavLink
+                            to={`/employees/${employee.id}`}
                             className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded transition-colors cursor-pointer"
                             title="View Details"
                           >
                             <Eye size={14} />
-                          </button>
-                          <button
-                            className="p-1.5 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded transition-colors cursor-pointer"
-                            title="Edit Employee"
-                          >
-                            <Edit size={14} />
-                          </button>
+                          </NavLink>
+                          
                           <button
                             onClick={() => handleDeleteEmployee(employee.id)}
                             className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors cursor-pointer"
