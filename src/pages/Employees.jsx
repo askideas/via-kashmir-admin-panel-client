@@ -501,13 +501,13 @@ const Employees = () => {
                             <Eye size={14} />
                           </NavLink>
                           
-                          <button
+                          {/* <button
                             onClick={() => handleDeleteEmployee(employee.id)}
                             className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors cursor-pointer"
                             title="Delete Employee"
                           >
                             <Trash2 size={14} />
-                          </button>
+                          </button> */}
                         </div>
                       </div>
                     </div>
