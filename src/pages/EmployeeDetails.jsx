@@ -75,7 +75,7 @@ const EmployeeDetails = () => {
         autoClose: 1500,
         hideProgressBar: true
       });
-      navigate('/manageemployees');
+      navigate('/employees');
     } finally {
       setLoading(false);
     }
@@ -975,7 +975,7 @@ const EmployeeDetails = () => {
         <p className="text-slate-600">Employee not found</p>
         <p className="text-sm text-slate-500 mt-2">ID: {id}</p>
         <NavLink 
-          to="/manageemployees" 
+          to="/employees" 
           className="mt-4 inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 cursor-pointer"
         >
           <ArrowLeft size={16} />
@@ -990,7 +990,7 @@ const EmployeeDetails = () => {
       {/* Header */}
       <div className="mb-6">
         <NavLink 
-          to="/manageemployees" 
+          to="/employees" 
           className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 mb-4 cursor-pointer"
         >
           <ArrowLeft size={20} />

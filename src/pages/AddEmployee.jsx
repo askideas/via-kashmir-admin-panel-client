@@ -382,7 +382,7 @@ const AddEmployee = () => {
       {/* Header */}
       <div className="mb-6">
         <NavLink 
-          to="/manageemployees" 
+          to="/employees" 
           className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 mb-4 cursor-pointer"
         >
           <ArrowLeft size={20} />
@@ -1175,7 +1175,7 @@ const AddEmployee = () => {
           </button>
           
           <NavLink
-            to="/manageemployees"
+            to="/employees"
             className="flex items-center justify-center gap-2 px-8 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 cursor-pointer transition-colors"
           >
             <X size={20} />
