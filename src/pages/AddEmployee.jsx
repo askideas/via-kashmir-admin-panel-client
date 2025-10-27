@@ -352,7 +352,7 @@ const AddEmployee = () => {
       
       // Navigate back to employees list after a delay
       setTimeout(() => {
-        window.location.href = '/manageemployees';
+        window.location.href = '/employees';
       }, 2000);
 
     } catch (error) {

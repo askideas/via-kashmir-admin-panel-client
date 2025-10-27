@@ -38,7 +38,7 @@ const App = () => {
                   <Route path="/advertisements" element={<PlaceholderPage title="Vendors Advertisements" />} />
                   <Route path="/employees" element={<Employees />} />
                   <Route path="/employees/:id" element={<EmployeeDetails />} />
-                  <Route path="/employees/add" element={<AddEmployee title="Add Employee" />} />
+                  <Route path="/addemployee" element={<AddEmployee title="Add Employee" />} />
                 </Routes>
               </Layout>
             </ProtectedRoute>
