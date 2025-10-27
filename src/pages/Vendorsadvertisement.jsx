@@ -368,12 +368,12 @@ const Vendorsadvertisement = () => {
               setSelectedAd(ad);
               setShowDetailsModal(true);
             }}
-            className="flex-1 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-3 py-2 rounded-lg text-xs font-medium transition-colors duration-200 flex items-center justify-center"
+            className="flex-1 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-3 py-2 rounded-lg text-xs font-medium transition-colors duration-200 flex items-center justify-center cursor-pointer"
           >
             <Eye size={12} className="mr-1" />
             View Details
           </button>
-          <button className="flex-1 bg-gray-50 text-gray-600 hover:bg-gray-100 px-3 py-2 rounded-lg text-xs font-medium transition-colors duration-200 flex items-center justify-center">
+          <button className="flex-1 bg-gray-50 text-gray-600 hover:bg-gray-100 px-3 py-2 rounded-lg text-xs font-medium transition-colors duration-200 flex items-center justify-center cursor-pointer">
             <Edit size={12} className="mr-1" />
             Edit
           </button>
@@ -423,7 +423,7 @@ const Vendorsadvertisement = () => {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             <ChevronLeft size={16} />
           </button>
@@ -435,9 +435,9 @@ const Vendorsadvertisement = () => {
               disabled={typeof page !== 'number'}
               className={`px-3 py-2 rounded-lg text-sm font-medium ${
                 page === currentPage
-                  ? 'bg-indigo-500 text-white'
+                  ? 'bg-indigo-500 text-white cursor-pointer'
                   : typeof page === 'number'
-                  ? 'border border-gray-300 hover:bg-gray-50'
+                  ? 'border border-gray-300 hover:bg-gray-50 cursor-pointer'
                   : 'cursor-default'
               }`}
             >
@@ -448,7 +448,7 @@ const Vendorsadvertisement = () => {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             <ChevronRight size={16} />
           </button>
@@ -476,7 +476,7 @@ const Vendorsadvertisement = () => {
           </div>
           <button
             onClick={() => setShowAddModal(true)}
-            className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors duration-200 flex items-center"
+            className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors duration-200 flex items-center cursor-pointer"
           >
             <Plus size={16} className="mr-2" />
             Add Advertisement
@@ -495,7 +495,7 @@ const Vendorsadvertisement = () => {
                   placeholder="Search advertisements, vendors, locations..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-text"
                 />
               </div>
             </div>
@@ -503,7 +503,7 @@ const Vendorsadvertisement = () => {
             {/* Filter Toggle */}
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors duration-200 flex items-center"
+              className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors duration-200 flex items-center cursor-pointer"
             >
               <Filter size={16} className="mr-2" />
               Filters
@@ -525,7 +525,7 @@ const Vendorsadvertisement = () => {
                   <select
                     value={filters.status}
                     onChange={(e) => handleFilterChange('status', e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
                   >
                     <option value="">All Status</option>
                     <option value="Active">Active</option>
@@ -541,7 +541,7 @@ const Vendorsadvertisement = () => {
                   <select
                     value={filters.category}
                     onChange={(e) => handleFilterChange('category', e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
                   >
                     <option value="">All Categories</option>
                     <option value="Adventure Tourism">Adventure Tourism</option>
@@ -559,7 +559,7 @@ const Vendorsadvertisement = () => {
                   <select
                     value={filters.placement}
                     onChange={(e) => handleFilterChange('placement', e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
                   >
                     <option value="">All Placements</option>
                     <option value="Home Screen Banner">Home Screen Banner</option>
@@ -579,7 +579,7 @@ const Vendorsadvertisement = () => {
                     placeholder="Enter location"
                     value={filters.location}
                     onChange={(e) => handleFilterChange('location', e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-text"
                   />
                 </div>
 
@@ -590,7 +590,7 @@ const Vendorsadvertisement = () => {
                     type="date"
                     value={filters.dateFrom}
                     onChange={(e) => handleFilterChange('dateFrom', e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
                   />
                 </div>
 
@@ -601,7 +601,7 @@ const Vendorsadvertisement = () => {
                     type="date"
                     value={filters.dateTo}
                     onChange={(e) => handleFilterChange('dateTo', e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
                   />
                 </div>
 
@@ -611,7 +611,7 @@ const Vendorsadvertisement = () => {
                   <select
                     value={filters.priceRange}
                     onChange={(e) => handleFilterChange('priceRange', e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
                   >
                     <option value="">All Budgets</option>
                     <option value="0-25000">₹0 - ₹25,000</option>
@@ -626,7 +626,7 @@ const Vendorsadvertisement = () => {
                 <div className="flex items-end">
                   <button
                     onClick={clearAllFilters}
-                    className="w-full bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center"
+                    className="w-full bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center cursor-pointer"
                   >
                     <X size={16} className="mr-2" />
                     Clear All
@@ -688,7 +688,7 @@ const Vendorsadvertisement = () => {
           {(searchTerm || Object.values(filters).some(filter => filter !== '')) && (
             <button
               onClick={clearAllFilters}
-              className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors duration-200"
+              className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors duration-200 cursor-pointer"
             >
               Clear Filters
             </button>
@@ -704,7 +704,7 @@ const Vendorsadvertisement = () => {
               <h2 className="text-xl font-semibold text-gray-900">Advertisement Details</h2>
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 cursor-pointer"
               >
                 <X size={24} />
               </button>
@@ -804,11 +804,11 @@ const Vendorsadvertisement = () => {
               </div>
               
               <div className="flex gap-3 mt-6 pt-6 border-t border-gray-200">
-                <button className="flex-1 bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors duration-200 flex items-center justify-center">
+                <button className="flex-1 bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors duration-200 flex items-center justify-center cursor-pointer">
                   <Edit size={16} className="mr-2" />
                   Edit Advertisement
                 </button>
-                <button className="flex-1 bg-red-50 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 transition-colors duration-200 flex items-center justify-center">
+                <button className="flex-1 bg-red-50 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 transition-colors duration-200 flex items-center justify-center cursor-pointer">
                   <Trash2 size={16} className="mr-2" />
                   Delete Advertisement
                 </button>
@@ -826,7 +826,7 @@ const Vendorsadvertisement = () => {
               <h2 className="text-xl font-semibold text-gray-900">Add New Advertisement</h2>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 cursor-pointer"
               >
                 <X size={24} />
               </button>
@@ -845,7 +845,7 @@ const Vendorsadvertisement = () => {
                       <input
                         type="text"
                         placeholder="Enter advertisement title"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-text"
                         required
                       />
                     </div>
@@ -858,7 +858,7 @@ const Vendorsadvertisement = () => {
                       <textarea
                         rows="4"
                         placeholder="Enter advertisement description"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-text"
                         required
                       />
                     </div>
@@ -869,7 +869,7 @@ const Vendorsadvertisement = () => {
                         Vendor *
                       </label>
                       <select
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
                         required
                       >
                         <option value="">Select a vendor</option>
@@ -887,7 +887,7 @@ const Vendorsadvertisement = () => {
                         Category *
                       </label>
                       <select
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
                         required
                       >
                         <option value="">Select category</option>
@@ -908,7 +908,7 @@ const Vendorsadvertisement = () => {
                       <input
                         type="text"
                         placeholder="Enter location (e.g., Srinagar, Kashmir)"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-text"
                         required
                       />
                     </div>
@@ -946,7 +946,7 @@ const Vendorsadvertisement = () => {
                         Advertisement Placement *
                       </label>
                       <select
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
                         required
                       >
                         <option value="">Select placement</option>
@@ -968,7 +968,7 @@ const Vendorsadvertisement = () => {
                         type="number"
                         placeholder="Enter budget amount"
                         min="1"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-text"
                         required
                       />
                     </div>
@@ -980,7 +980,7 @@ const Vendorsadvertisement = () => {
                       </label>
                       <input
                         type="date"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
                         required
                       />
                     </div>
@@ -992,7 +992,7 @@ const Vendorsadvertisement = () => {
                       </label>
                       <input
                         type="date"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
                         required
                       />
                     </div>
@@ -1003,7 +1003,7 @@ const Vendorsadvertisement = () => {
                         Status *
                       </label>
                       <select
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
                         required
                         defaultValue="Pending"
                       >
@@ -1019,7 +1019,7 @@ const Vendorsadvertisement = () => {
                         Priority Level
                       </label>
                       <select
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer"
                         defaultValue="Medium"
                       >
                         <option value="Low">Low</option>
@@ -1037,7 +1037,7 @@ const Vendorsadvertisement = () => {
                       <input
                         type="tel"
                         placeholder="Enter contact phone number"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-text"
                       />
                     </div>
 
@@ -1048,7 +1048,7 @@ const Vendorsadvertisement = () => {
                       <input
                         type="email"
                         placeholder="Enter contact email"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-text"
                       />
                     </div>
                   </div>
@@ -1062,9 +1062,9 @@ const Vendorsadvertisement = () => {
                       <input
                         type="checkbox"
                         id="featured"
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded cursor-pointer"
                       />
-                      <label htmlFor="featured" className="ml-2 text-sm text-gray-700">
+                      <label htmlFor="featured" className="ml-2 text-sm text-gray-700 cursor-pointer">
                         Mark as Featured Advertisement
                       </label>
                     </div>
@@ -1072,9 +1072,9 @@ const Vendorsadvertisement = () => {
                       <input
                         type="checkbox"
                         id="autoRenew"
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded cursor-pointer"
                       />
-                      <label htmlFor="autoRenew" className="ml-2 text-sm text-gray-700">
+                      <label htmlFor="autoRenew" className="ml-2 text-sm text-gray-700 cursor-pointer">
                         Auto-renew advertisement
                       </label>
                     </div>
@@ -1082,10 +1082,10 @@ const Vendorsadvertisement = () => {
                       <input
                         type="checkbox"
                         id="sendNotification"
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded cursor-pointer"
                         defaultChecked
                       />
-                      <label htmlFor="sendNotification" className="ml-2 text-sm text-gray-700">
+                      <label htmlFor="sendNotification" className="ml-2 text-sm text-gray-700 cursor-pointer">
                         Send notification to vendor
                       </label>
                     </div>
@@ -1093,10 +1093,10 @@ const Vendorsadvertisement = () => {
                       <input
                         type="checkbox"
                         id="analytics"
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded cursor-pointer"
                         defaultChecked
                       />
-                      <label htmlFor="analytics" className="ml-2 text-sm text-gray-700">
+                      <label htmlFor="analytics" className="ml-2 text-sm text-gray-700 cursor-pointer">
                         Enable analytics tracking
                       </label>
                     </div>
@@ -1108,19 +1108,19 @@ const Vendorsadvertisement = () => {
                   <button
                     type="button"
                     onClick={() => setShowAddModal(false)}
-                    className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors duration-200 font-medium"
+                    className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors duration-200 font-medium cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="button"
-                    className="flex-1 bg-gray-200 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-200 font-medium"
+                    className="flex-1 bg-gray-200 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-200 font-medium cursor-pointer"
                   >
                     Save as Draft
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors duration-200 font-medium"
+                    className="flex-1 bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors duration-200 font-medium cursor-pointer"
                   >
                     Create Advertisement
                   </button>
