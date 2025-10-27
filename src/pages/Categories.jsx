@@ -85,10 +85,12 @@ const Categories = () => {
       if (editingCategory) {
         // Update existing category
         const categoryId = editingCategory.id || editingCategory._id;
+        const tokenData = await generateAPIToken();
         const response = await fetch(`${API_BASE_URL}/categories/${categoryId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${tokenData.data.access_token}`
           },
           body: JSON.stringify({
             name: formData.name.trim(),
@@ -107,10 +109,12 @@ const Categories = () => {
         });
       } else {
         // Add new category
+        const tokenData = await generateAPIToken();
         const response = await fetch(`${API_BASE_URL}/categories`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${tokenData.data.access_token}`
           },
           body: JSON.stringify({
             name: formData.name.trim(),
@@ -158,10 +162,12 @@ const Categories = () => {
   const handleDelete = async (categoryId) => {
     if (window.confirm('Are you sure you want to delete this category?')) {
       try {
+        const tokenData = await generateAPIToken();
         const response = await fetch(`${API_BASE_URL}/categories/${categoryId}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${tokenData.data.access_token}`
           },
         });
         
