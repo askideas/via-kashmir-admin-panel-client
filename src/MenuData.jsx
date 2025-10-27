@@ -47,7 +47,7 @@ export const menuData = [
         id: 'advertisements',
         label: 'Vendors Advertisements',
         icon: <Megaphone />,
-        link: '/advertisements'
+        link: '/vendorsadvertisements'
     },
     {
         id: 'manageemployees',
