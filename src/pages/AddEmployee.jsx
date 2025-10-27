@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { menuData } from '../MenuData';
+import { generateAPIToken } from '../utils/apitoken';
 
 const AddEmployee = () => {
   const [formData, setFormData] = useState({
@@ -82,6 +83,7 @@ const AddEmployee = () => {
     employmentType: '',
     reportingManager: '',
     probationPeriod: '',
+    salary: '', // New salary field
     
     // Additional
     bloodGroup: '',
@@ -253,6 +255,9 @@ const AddEmployee = () => {
     try {
       setSubmitting(true);
       
+      // Get authentication token
+      const tokenData = await generateAPIToken();
+      
       // Create FormData for file uploads
       const submitData = new FormData();
       
@@ -270,7 +275,7 @@ const AddEmployee = () => {
       });
 
       // Make API call to store employee data
-      const API_BASE_URL = 'https://via-kashmir-admin-panel-server.vercel.app';
+      const API_BASE_URL = import.meta.env.VITE_VIA_KASHMIR_ADMIN_SERVER_API || 'https://via-kashmir-admin-panel-server.vercel.app';
       
       console.log('Submitting to:', `${API_BASE_URL}/employees`);
       console.log('FormData contents:');
@@ -282,15 +287,14 @@ const AddEmployee = () => {
         }
       }
       
-      // Verify files are attached
-      console.log('Profile Picture File:', formData.profilePicture);
-      console.log('Government Proof File:', formData.governmentProof);
-      
       const response = await fetch(`${API_BASE_URL}/employees`, {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${tokenData.data.access_token}`
+          // Don't set Content-Type header when using FormData
+          // The browser will set it automatically with the correct boundary
+        },
         body: submitData,
-        // Don't set Content-Type header when using FormData
-        // The browser will set it automatically with the correct boundary
       });
 
       if (!response.ok) {
@@ -299,13 +303,12 @@ const AddEmployee = () => {
       }
 
       const result = await response.json();
+      console.log('Employee added successfully:', result);
       
       toast.success('Employee added successfully!', {
         autoClose: 1500,
         hideProgressBar: true
       });
-      
-      setSubmitting(false);
       
       // Reset form after successful submission
       setFormData({
@@ -351,13 +354,14 @@ const AddEmployee = () => {
         employmentType: '',
         reportingManager: '',
         probationPeriod: '',
+        salary: '', // Reset salary field
         bloodGroup: '',
         medicalConditions: '',
         hobbies: ''
       });
       setSameAsCurrentAddress(false);
       
-      // Optionally navigate back to employees list after a delay
+      // Navigate back to employees list after a delay
       setTimeout(() => {
         window.location.href = '/manageemployees';
       }, 2000);
@@ -371,6 +375,8 @@ const AddEmployee = () => {
         errorMessage = 'Network error. Please check your internet connection and try again.';
       } else if (error.message.includes('HTTP error')) {
         errorMessage = 'Server error. Please try again later.';
+      } else if (error.message.includes('Authentication failed')) {
+        errorMessage = 'Authentication failed. Please refresh the page and try again.';
       } else if (error.message) {
         errorMessage = error.message;
       }
@@ -379,6 +385,7 @@ const AddEmployee = () => {
         autoClose: 3000,
         hideProgressBar: true
       });
+    } finally {
       setSubmitting(false);
     }
   };
@@ -1100,6 +1107,20 @@ const AddEmployee = () => {
                 </div>
                 
                 <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Current Salary (₹) *</label>
+                  <input
+                    type="number"
+                    name="salary"
+                    value={formData.salary}
+                    onChange={handleInputChange}
+                    required
+                    min="0"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-400"
+                    placeholder="Enter current salary"
+                  />
+                </div>
+                
+                <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Reporting Manager</label>
                   <input
                     type="text"
@@ -1110,7 +1131,7 @@ const AddEmployee = () => {
                   />
                 </div>
                 
-                <div>
+                <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-slate-700 mb-2">Probation Period (Months)</label>
                   <input
                     type="number"
