@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, Edit, Trash2, Save, X } from 'lucide-react';
 import { toast } from 'react-toastify';
+import {generateAPIToken} from '../utils/apitoken'
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
@@ -18,20 +19,24 @@ const Categories = () => {
 
   // Fetch categories from API
   const fetchCategories = async () => {
+    const tokenData = await generateAPIToken();
+
     try {
       setLoading(true);
       const response = await fetch(`${API_BASE_URL}/categories`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenData.data.access_token}`
         },
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
+
       // Handle both array response and object with data property
       const categoriesArray = Array.isArray(data) ? data : (data.categories || data.data || []);
       setCategories(categoriesArray);
