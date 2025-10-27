@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, Edit, Trash2, Save, X } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, Save, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { toast } from 'react-toastify';
 import {generateAPIToken} from '../utils/apitoken'
 
@@ -14,6 +14,8 @@ const Categories = () => {
     name: ''
   });
   const [submitting, setSubmitting] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(12);
 
   const API_BASE_URL = import.meta.env.VITE_VIA_KASHMIR_ADMIN_SERVER_API || 'https://via-kashmir-admin-panel-server.vercel.app';
 
@@ -39,8 +41,16 @@ const Categories = () => {
 
       // Handle both array response and object with data property
       const categoriesArray = Array.isArray(data) ? data : (data.categories || data.data || []);
-      setCategories(categoriesArray);
-      setFilteredCategories(categoriesArray);
+      
+      // Sort by latest (createdAt or updatedAt) - newest first
+      const sortedCategories = categoriesArray.sort((a, b) => {
+        const dateA = new Date(a.updatedAt || a.createdAt || 0);
+        const dateB = new Date(b.updatedAt || b.createdAt || 0);
+        return dateB - dateA; // Descending order (latest first)
+      });
+      
+      setCategories(sortedCategories);
+      setFilteredCategories(sortedCategories);
     } catch (error) {
       const errorMessage = error.message.includes('HTTP error') 
         ? 'Error communicating with server. Please check your connection and try again.'
@@ -49,7 +59,6 @@ const Categories = () => {
         autoClose: 1500,
         hideProgressBar: true 
       });
-      // Set empty arrays to prevent undefined errors
       setCategories([]);
       setFilteredCategories([]);
     } finally {
@@ -67,6 +76,8 @@ const Categories = () => {
       );
       setFilteredCategories(filtered);
     }
+    // Reset to first page when search changes
+    setCurrentPage(1);
   }, [searchTerm, categories]);
 
   // Fetch categories on component mount
@@ -200,13 +211,57 @@ const Categories = () => {
     setEditingCategory(null);
   };
 
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentCategories = filteredCategories.slice(startIndex, endIndex);
+
+  // Pagination handlers
+  const goToPage = (page) => {
+    setCurrentPage(page);
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    
+    return pageNumbers;
+  };
+
   return (
     <div className="max-w-6xl font-sans">
       {/* Header */}
       <div className="flex justify-between items-start mb-6">
         <div>
           <h1 className="text-3xl font-bold text-slate-800 mb-1.5 tracking-tight">Categories</h1>
-          <p className="text-slate-500 text-base m-0 font-normal">Manage your business categories</p>
+          <p className="text-slate-500 text-base m-0 font-normal">
+            Manage your business categories ({filteredCategories.length} total)
+          </p>
         </div>
         
         <button
@@ -224,12 +279,17 @@ const Categories = () => {
           <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder="Search categories..."
+            placeholder="Search categories by name..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent cursor-text"
           />
         </div>
+        {searchTerm && (
+          <div className="mt-3 text-sm text-slate-600">
+            Showing {filteredCategories.length} result{filteredCategories.length !== 1 ? 's' : ''} for "{searchTerm}"
+          </div>
+        )}
       </div>
 
       {/* Add/Edit Form */}
@@ -288,9 +348,16 @@ const Categories = () => {
       {/* Categories List */}
       <div className="bg-white rounded-xl border border-slate-200">
         <div className="p-6 border-b border-slate-200">
-          <h2 className="text-lg font-semibold text-slate-800">
-            All Categories ({filteredCategories.length})
-          </h2>
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-semibold text-slate-800">
+              All Categories
+            </h2>
+            {totalPages > 1 && (
+              <div className="text-sm text-slate-500">
+                Page {currentPage} of {totalPages} • Showing {currentCategories.length} of {filteredCategories.length}
+              </div>
+            )}
+          </div>
         </div>
         
         <div className="p-6">
@@ -313,47 +380,106 @@ const Categories = () => {
               )}
             </div>
           ) : (
-            <div className="grid gap-4">
-              {filteredCategories.map((category) => (
-                <div
-                  key={category.id || category._id || Math.random()}
-                  className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:border-slate-300 transition-colors"
-                >
-                  <div className="flex-1">
-                    <h3 className="font-medium text-slate-800 mb-1">{category.name || 'Unnamed Category'}</h3>
-                    <div className="flex items-center gap-4 text-sm text-slate-500">
-                      <span>ID: {category.id || category._id || 'N/A'}</span>
-                      <span>
-                        Created: {category.createdAt ? new Date(category.createdAt).toLocaleDateString() : 'N/A'}
-                      </span>
-                      {category.updatedAt && category.updatedAt !== category.createdAt && (
+            <>
+              <div className="grid gap-4">
+                {currentCategories.map((category) => (
+                  <div
+                    key={category.id || category._id || Math.random()}
+                    className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:border-slate-300 transition-colors"
+                  >
+                    <div className="flex-1">
+                      <h3 className="font-medium text-slate-800 mb-1">{category.name || 'Unnamed Category'}</h3>
+                      <div className="flex items-center gap-4 text-sm text-slate-500">
+                        <span>ID: {category.id || category._id || 'N/A'}</span>
                         <span>
-                          Updated: {new Date(category.updatedAt).toLocaleDateString()}
+                          Created: {category.createdAt ? new Date(category.createdAt).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          }) : 'N/A'}
                         </span>
-                      )}
+                        {category.updatedAt && category.updatedAt !== category.createdAt && (
+                          <span>
+                            Updated: {new Date(category.updatedAt).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </span>
+                        )}
+                      </div>
                     </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleEdit(category)}
+                        className="p-2 text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 rounded-lg transition-all duration-200 cursor-pointer"
+                        title="Edit category"
+                      >
+                        <Edit size={16} />
+                      </button>
+                      
+                      <button
+                        onClick={() => handleDelete(category.id || category._id)}
+                        className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200 cursor-pointer"
+                        title="Delete category"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between mt-6 pt-6 border-t border-slate-200">
+                  <div className="text-sm text-slate-600">
+                    Showing {startIndex + 1} to {Math.min(endIndex, filteredCategories.length)} of {filteredCategories.length} categories
                   </div>
                   
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => handleEdit(category)}
-                      className="p-2 text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 rounded-lg transition-all duration-200 cursor-pointer"
-                      title="Edit category"
+                      onClick={goToPreviousPage}
+                      disabled={currentPage === 1}
+                      className="flex items-center gap-1 px-3 py-2 text-sm border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                      <Edit size={16} />
+                      <ChevronLeft size={16} />
+                      Previous
                     </button>
                     
+                    <div className="flex items-center gap-1">
+                      {getPageNumbers().map((pageNumber) => (
+                        <button
+                          key={pageNumber}
+                          onClick={() => goToPage(pageNumber)}
+                          className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+                            currentPage === pageNumber
+                              ? 'bg-indigo-500 text-white'
+                              : 'border border-slate-200 hover:bg-slate-50'
+                          }`}
+                        >
+                          {pageNumber}
+                        </button>
+                      ))}
+                    </div>
+                    
                     <button
-                      onClick={() => handleDelete(category.id || category._id)}
-                      className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200 cursor-pointer"
-                      title="Delete category"
+                      onClick={goToNextPage}
+                      disabled={currentPage === totalPages}
+                      className="flex items-center gap-1 px-3 py-2 text-sm border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                      <Trash2 size={16} />
+                      Next
+                      <ChevronRight size={16} />
                     </button>
                   </div>
                 </div>
-              ))}
-            </div>
+              )}
+            </>
           )}
         </div>
       </div>
