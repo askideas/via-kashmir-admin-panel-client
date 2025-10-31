@@ -1,4 +1,4 @@
-import { Bell, Building2, ChartBarStacked, Folders, IdCardLanyard, IndianRupee, LayoutDashboard, Megaphone, Users } from "lucide-react";
+import { Bell, Building2, ChartBarStacked, Folders, IdCardLanyard, IndianRupee, LayoutDashboard, Megaphone, Users, Bot, Package } from "lucide-react";
 
 export const menuData = [
     {
@@ -48,6 +48,18 @@ export const menuData = [
         label: 'Vendors Advertisements',
         icon: <Megaphone />,
         link: '/vendorsadvertisements'
+    },
+    {
+        id: 'aitravelplan',
+        label: 'AI Travel Plan',
+        icon: <Bot />,
+        link: '/aitravelplan'
+    },
+    {
+        id: 'travelpackages',
+        label: 'Travel Packages',
+        icon: <Package />,
+        link: '/travelpackages'
     },
     {
         id: 'manageemployees',

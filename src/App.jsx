@@ -15,6 +15,7 @@ import Employees from './pages/Employees';
 import AddEmployee from './pages/AddEmployee';
 import EmployeeDetails from './pages/EmployeeDetails';
 import Vendorsadvertisement from './pages/Vendorsadvertisement';
+import AITravelPlan from './pages/AITravelPlan';
 
 const App = () => {
   return (
@@ -40,6 +41,7 @@ const App = () => {
                   <Route path="/employees" element={<Employees />} />
                   <Route path="/employees/:id" element={<EmployeeDetails />} />
                   <Route path="/addemployee" element={<AddEmployee title="Add Employee" />} />
+                  <Route path="/aitravelplan" element={<AITravelPlan />} />
                 </Routes>
               </Layout>
             </ProtectedRoute>
